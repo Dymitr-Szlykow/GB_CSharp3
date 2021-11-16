@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreLib", "CoreLib\CoreLib.csproj", "{A75DFDDF-1EFD-4237-9AF9-0BD2D200CFCF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreLib", "CoreLib\CoreLib.csproj", "{A75DFDDF-1EFD-4237-9AF9-0BD2D200CFCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailSend.WPFapp", "MailSend.WPFapp\MailSend.WPFapp.csproj", "{5FB28D7B-A238-4711-84FF-70EBC3C13BC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MailSend.WPFapp", "MailSend.WPFapp\MailSend.WPFapp.csproj", "{5FB28D7B-A238-4711-84FF-70EBC3C13BC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailSend.WinFormsApp", "MailSend.WinFormsApp\MailSend.WinFormsApp.csproj", "{1E8F4238-F758-424C-B659-5CFF790D19F4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{5FB28D7B-A238-4711-84FF-70EBC3C13BC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FB28D7B-A238-4711-84FF-70EBC3C13BC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5FB28D7B-A238-4711-84FF-70EBC3C13BC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E8F4238-F758-424C-B659-5CFF790D19F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E8F4238-F758-424C-B659-5CFF790D19F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E8F4238-F758-424C-B659-5CFF790D19F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E8F4238-F758-424C-B659-5CFF790D19F4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
