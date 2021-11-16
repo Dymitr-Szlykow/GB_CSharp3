@@ -10,7 +10,7 @@ namespace CoreLib
 {
     public class MailSendCore
     {
-        protected static Regex _MailAdressTemplate = new Regex(@"\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,6}");
+        protected static Regex _MailAdressTemplate = new Regex(@"^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,6}");
         protected static Regex _DeleteMe = new Regex("^[a-zA-Z]{1}[a-zA-Z0-9]{1,9}$");
 
         public MailAddress Destination { get; protected set; }
@@ -73,6 +73,22 @@ namespace CoreLib
         {
             // TODO
             return false;
+        }
+
+        public bool SetClientHost(string input)
+        {
+            smtpClient.Host = input;
+            return true;
+        }
+
+        public bool SetClientPort(string input)
+        {
+            if (int.TryParse(input, out int res))
+            {
+                smtpClient.Port = res;
+                return true;
+            }
+            else return false;
         }
 
 

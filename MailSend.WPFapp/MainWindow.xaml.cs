@@ -27,7 +27,7 @@ namespace MailSend.WPFapp
         private string _MailBody;
         private string _Subject;
 
-        public string SenderAdress { get => core.Sender.Address; }
+        public string SenderAddress { get => core.Sender.Address; }
         public string Client { get => core.SmtpClientHost; }
         public string Port { get => core.SmtpClientPort.ToString(); }
         public string Destination
@@ -70,7 +70,7 @@ namespace MailSend.WPFapp
         {
             InitializeComponent();
             core = new MailSendCore();
-            core.SetSender("somemail@gmail.com", "Tom");
+            _ = core.SetSender("somemail@gmail.com", "Tom");
             Destination = "somemail@yandex.ru";
             Subject = "Тест";
             MailBody = "Письмо-тест работы smtp-клиента.";

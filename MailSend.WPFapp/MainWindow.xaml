@@ -26,7 +26,7 @@
         <Label Grid.Row="0" Grid.Column="1" Margin="5,0,15,0"
                Content="Отправитель:" VerticalContentAlignment="Center"/>
         <TextBlock Grid.Row="0" Grid.Column="2"
-               Text="{Binding SenderAdress, Mode=OneWay}" VerticalAlignment="Center"/>
+               Text="{Binding SenderAddress, Mode=OneWay}" VerticalAlignment="Center"/>
         <Button Grid.Row="0" Grid.Column="3" Margin="3,0,3,0"
                 Content="изменить" VerticalAlignment="Center" Padding="5,0,5,2"
                 x:Name="btn_SwitchSender" Click="btn_SwitchSender_Click"/>
