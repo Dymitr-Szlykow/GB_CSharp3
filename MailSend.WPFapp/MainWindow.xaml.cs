@@ -69,8 +69,8 @@ namespace MailSend.WPFapp
         public MainWindow()
         {
             InitializeComponent();
-            core = new MailSendCore();
-            _ = core.SetSender("somemail@gmail.com", "Tom");
+            _ = (core = new MailSendCore()).SetSender("somemail@gmail.com", "Tom");
+
             Destination = "somemail@yandex.ru";
             Subject = "Тест";
             MailBody = "Письмо-тест работы smtp-клиента.";
@@ -78,19 +78,38 @@ namespace MailSend.WPFapp
         }
 
 
-
-        #region TODO
-        internal void btn_SwitchSender_Click(object sender, RoutedEventArgs e)
+        public void ChangeProcessStart(TextBox txb, string hide, string show)
         {
-            core.SetSender("адресс", "имя");
+            txb.Text = "введите новое значение";
+            foreach (FrameworkElement el in TheGrid.Children)
+            {
+                if (el.Tag?.ToString() == hide) el.Visibility = Visibility.Hidden;
+                else if (el.Tag?.ToString() == show) el.Visibility = Visibility.Visible;
+            }
+        }
+        public void ChangeProcessEnd(string hide, string show)
+        {
+            foreach (FrameworkElement el in TheGrid.Children)
+            {
+                if (el.Tag?.ToString() == hide) el.Visibility = Visibility.Hidden;
+                else if (el.Tag?.ToString() == show) el.Visibility = Visibility.Visible;
+            }
+        }
+        public bool ChangeProcessTry(TextBox txb, Predicate<string> changingMethod, string propertyName)
+        {
+            if (changingMethod(txb.Text))
+            {
+                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+                return true;
+            }
+            else
+            {
+                txb.Text = "некорректное значение";
+                return false;
+            }
         }
 
-        internal void btn_SwitchSmtpClient_Click(object sender, RoutedEventArgs e)
-        {
-            core.SetSmtpClient();
-        }
-
-        internal void btn_Send_Click(object sender, RoutedEventArgs e)
+        public void SendMail()
         {
             if (core.SetDestination(Destination))
             {
@@ -102,6 +121,32 @@ namespace MailSend.WPFapp
                 _ = MessageBox.Show("некорректный адрес", "ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        #endregion
+
+
+        internal void btn_SenderChangeStart_Click(object sender, RoutedEventArgs e) => ChangeProcessStart(txb_Sender, "SenderSet", "SenderChange");
+        internal void btn_SenderChangeCancel_Click(object sender, RoutedEventArgs e) => ChangeProcessEnd("SenderChange", "SenderSet");
+        internal void btn_SenderChangeTry_Click(object sender, RoutedEventArgs e)
+        {
+            if (ChangeProcessTry(txb_Sender, core.SetSender, "SenderAddress"))
+                ChangeProcessEnd("SenderChange", "SenderSet");
+        }
+            
+        internal void btn_ClientChangeStart_Click(object sender, RoutedEventArgs e) => ChangeProcessStart(txb_Client, "ClientSet", "ClientChange");
+        internal void btn_ClientChangeCancel_Click(object sender, RoutedEventArgs e) => ChangeProcessEnd("ClientChange", "ClientSet");
+        internal void btn_ClientChangeTry_Click(object sender, RoutedEventArgs e)
+        {
+            if (ChangeProcessTry(txb_Client, core.SetClientHost, "Client"))
+                ChangeProcessEnd("ClientChange", "ClientSet");
+        }
+
+        internal void btn_PortChangeStart_Click(object sender, RoutedEventArgs e) => ChangeProcessStart(txb_Port, "PortSet", "PortChange");
+        internal void btn_PortChangeCancel_Click(object sender, RoutedEventArgs e) => ChangeProcessEnd("PortChange", "PortSet");
+        internal void btn_PortChangeTry_Click(object sender, RoutedEventArgs e)
+        {
+            if (ChangeProcessTry(txb_Port, core.SetClientPort, "Port"))
+                ChangeProcessEnd("PortChange", "PortSet");
+        }
+
+        internal void btn_Send_Click(object sender, RoutedEventArgs e) => SendMail();
     }
 }

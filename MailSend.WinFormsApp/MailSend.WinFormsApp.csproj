@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CoreLib\CoreLib.csproj" />
-    <ProjectReference Include="..\Mail.Send.WinFormsApp.ControlsLib\Mail.Send.WinFormsApp.ControlsLib.csproj" />
   </ItemGroup>
 
 </Project>
