@@ -1,6 +1,7 @@
 ﻿using CoreLib;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Net.Mail;
@@ -23,22 +24,15 @@ namespace MailSend.WPFapp
     {
         public MailSendCore core;
 
-        private string _Destination;
+        private string _NewDestination;
         private string _MailBody;
         private string _Subject;
 
+        #region СВОЙСТВА
         public string SenderAddress { get => core.Sender.Address; }
         public string Client { get => core.SmtpClientHost; }
         public string Port { get => core.SmtpClientPort.ToString(); }
-        public string Destination
-        {
-            get => _Destination;
-            set
-            {
-                _Destination = value;
-                NotifyPropertyChanged();
-            }
-        }
+
         public string MailBody
         {
             get => _MailBody;
@@ -58,6 +52,33 @@ namespace MailSend.WPFapp
             }
         }
 
+        public ObservableCollection<string> Attachments
+        {
+            get => core.Attachments;
+            set => core.Attachments = value;
+        }
+        public string SelectedAttachment { get; set; }
+        //public IList<object> SelectedAttachments { get; set; }
+
+        public ObservableCollection<MailAddress> Destinations
+        {
+            get => core.Destinations;
+            set => core.Destinations = value;
+        }
+        public string NewDestination
+        {
+            get => _NewDestination;
+            set
+            {
+                _NewDestination = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("NewDestination"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("NewDestinationFits"));
+            }
+        }
+        public bool NewDestinationFits { get => core.AddressFits(NewDestination); }
+        public string SelectedDestination { get; set; }
+        #endregion
+
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
@@ -70,8 +91,11 @@ namespace MailSend.WPFapp
         {
             InitializeComponent();
             _ = (core = new MailSendCore()).SetSender("somemail@gmail.com", "Tom");
+            Attachments = new ObservableCollection<string>();
+            Destinations = new ObservableCollection<MailAddress>();
 
-            Destination = "somemail@yandex.ru";
+            //Destination = "somemail@yandex.ru";
+            NewDestination = string.Empty;
             Subject = "Тест";
             MailBody = "Письмо-тест работы smtp-клиента.";
             DataContext = this;
@@ -111,14 +135,14 @@ namespace MailSend.WPFapp
 
         public void SendMail()
         {
-            if (core.SetDestination(Destination))
+            if (Destinations.Count > 0) // core.SetDestination(Destination)
             {
                 string warning = core.SendMakingHTML(Subject, MailBody);
                 _ = MessageBox.Show(warning, "отправка письма", MessageBoxButton.YesNoCancel, MessageBoxImage.Exclamation);
             }
             else
             {
-                _ = MessageBox.Show("некорректный адрес", "ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                _ = MessageBox.Show("не указаны получатели", "ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -148,5 +172,44 @@ namespace MailSend.WPFapp
         }
 
         internal void btn_Send_Click(object sender, RoutedEventArgs e) => SendMail();
+
+        private void btn_AddAttachment_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new Microsoft.Win32.OpenFileDialog();
+            if (dlg.ShowDialog() == true && !Attachments.Contains(dlg.FileName)) Attachments.Add(dlg.FileName);
+        }
+
+        private void btn_RemoveAttachment_Click(object sender, RoutedEventArgs e)
+        {
+            //if (SelectedAttachments != null)
+            //    foreach (var el in SelectedAttachments) _ = Attachments.Remove(el.ToString());
+            _ = Attachments.Remove(SelectedAttachment);
+        }
+
+        private void btn_AddReciever_Click(object sender, RoutedEventArgs e)
+        {
+            bool exists = false;
+            foreach (MailAddress el in Destinations)
+            {
+                if (el.Address == NewDestination)
+                {
+                    exists = true;
+                    break;
+                }
+            }
+            if (!exists) Destinations.Add(new MailAddress(NewDestination));
+        }
+
+        private void btn_RemoveReciever_Click(object sender, RoutedEventArgs e)
+        {
+            for (int i = Destinations.Count - 1; i >= 0; i--)
+            {
+                if (Destinations[i].Address == SelectedDestination)
+                {
+                    Destinations.RemoveAt(i);
+                    break;
+                }
+            }
+        }
     }
 }
