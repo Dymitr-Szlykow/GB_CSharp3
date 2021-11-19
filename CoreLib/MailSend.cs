@@ -14,9 +14,8 @@ namespace CoreLib
         protected static Regex _MailAdressTemplate = new Regex(@"^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,6}");
         protected static Regex _DeleteMe = new Regex("^[a-zA-Z]{1}[a-zA-Z0-9]{1,9}$");
 
-        //public MailAddress Destination { get; protected set; }
         public MailAddress Sender { get; protected set; }
-        public MailMessage message;  // TODO
+        //public MailMessage message;  // TODO
 
         protected SmtpClient smtpClient;
         public string SmtpClientHost { get => smtpClient.Host; }
@@ -34,11 +33,15 @@ namespace CoreLib
                 Credentials = new NetworkCredential("somemail@gmail.com", "mypassword"),
                 EnableSsl = true
             };
+            Attachments = new ObservableCollection<string>();
+            Destinations = new ObservableCollection<MailAddress> { new MailAddress("somemail@yandex.ru") };
         }
 
         public MailSendCore(SmtpClient client)
         {
             smtpClient = client;
+            Attachments = new ObservableCollection<string>();
+            Destinations = new ObservableCollection<MailAddress>();
         }
 
 
@@ -62,23 +65,13 @@ namespace CoreLib
             else return false;
         }
 
-        //public bool SetDestination(string address)
-        //{
-        //    if (AddressFits(address))
-        //    {
-        //        Destination = new MailAddress(address);
-        //        return true;
-        //    }
-        //    else return false;
-        //}
-
         public bool SetSmtpClient()
         {
             // TODO
             return false;
         }
 
-        public bool SetClientHost(string input)
+        public bool SetClientHost(string input)  // TODO
         {
             smtpClient.Host = input;
             return true;
@@ -97,21 +90,21 @@ namespace CoreLib
 
         public bool AddressFits(string address) => _MailAdressTemplate.IsMatch(address);
 
-        public static (string, int) GetClient(string address)  // TODO
-        {
-            string[] temp = address.Split(new char[] { '@', '.' }, StringSplitOptions.None);
-            switch (temp[1])
-            {
-                case "yandex":
-                    return ("smtp.yandex.ru", 25);
-                case "gmail":
-                    return ("smtp.gmail.com", 58);
-                case "mail":
-                    return ("smtp.mail.ru", 25);
-                default:
-                    throw new NotImplementedException();
-            }
-        }
+        //public static (string, int) GetClient(string address)  // TODO
+        //{
+        //    string[] temp = address.Split(new char[] { '@', '.' }, StringSplitOptions.None);
+        //    switch (temp[1])
+        //    {
+        //        case "yandex":
+        //            return ("smtp.yandex.ru", 25);
+        //        case "gmail":
+        //            return ("smtp.gmail.com", 58);
+        //        case "mail":
+        //            return ("smtp.mail.ru", 25);
+        //        default:
+        //            throw new NotImplementedException();
+        //    }
+        //}
 
 
         protected MailMessage FormMessage(string subject, string body)
@@ -134,27 +127,13 @@ namespace CoreLib
             }
             return res;
         }
-
         protected MailMessage FormHTMLMessage(string subject, string body)
         {
-            var res = new MailMessage(Sender, Destinations[0])
-            {
-                Subject = subject,
-                Body = body,
-                IsBodyHtml = true
-            };
-
-            if (Destinations.Count > 1)
-            {
-                for (int i = 1; i < Destinations.Count; i++) res.To.Add(Destinations[i]);
-            }
-
-            if (Attachments != null)
-            {
-                foreach (var el in Attachments) res.Attachments.Add(new Attachment(el));
-            }
+            MailMessage res = FormMessage(subject, body);
+            res.IsBodyHtml = true;
             return res;
         }
+
 
         public (MailMessage, string) Send(MailMessage message)
         {
@@ -184,7 +163,7 @@ namespace CoreLib
             return (message, report.ToString());
         }
 
-        protected void Send() => smtpClient.Send(message);  // TODO
+        //protected void Send() => smtpClient.Send(message);  // TODO
         public string Send(string subject, string body) => Send(FormMessage(subject, body)).Dispose();
         public string SendAsHTML(string subject, string body) => Send(FormHTMLMessage(subject, body)).Dispose();
         public string SendMakingHTML(string subject, string body) => Send(FormHTMLMessage(subject, "<p>" + body + "</p>")).Dispose();

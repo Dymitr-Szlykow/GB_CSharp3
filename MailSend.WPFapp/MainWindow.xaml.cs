@@ -90,15 +90,13 @@ namespace MailSend.WPFapp
         public MainWindow()
         {
             InitializeComponent();
-            _ = (core = new MailSendCore()).SetSender("somemail@gmail.com", "Tom");
-            Attachments = new ObservableCollection<string>();
-            Destinations = new ObservableCollection<MailAddress>();
+            DataContext = this;
 
-            //Destination = "somemail@yandex.ru";
+            _ = (core = new MailSendCore()).SetSender("somemail@gmail.com", "Tom");
+
             NewDestination = string.Empty;
             Subject = "Тест";
             MailBody = "Письмо-тест работы smtp-клиента.";
-            DataContext = this;
         }
 
 
@@ -147,46 +145,57 @@ namespace MailSend.WPFapp
         }
 
 
-        internal void btn_SenderChangeStart_Click(object sender, RoutedEventArgs e) => ChangeProcessStart(txb_Sender, "SenderSet", "SenderChange");
-        internal void btn_SenderChangeCancel_Click(object sender, RoutedEventArgs e) => ChangeProcessEnd("SenderChange", "SenderSet");
-        internal void btn_SenderChangeTry_Click(object sender, RoutedEventArgs e)
+        protected void TurnTabLeft(object sender, RoutedEventArgs e)
+        {
+            if (tbc_TheOne.SelectedIndex > 0) tbc_TheOne.SelectedIndex--;
+            else tbc_TheOne.SelectedIndex = 0;
+        }
+        protected void TurnTabRight(object sender, RoutedEventArgs e)
+        {
+            if (tbc_TheOne.SelectedIndex < tbc_TheOne.Items.Count - 1) tbc_TheOne.SelectedIndex++;
+            else tbc_TheOne.SelectedIndex = tbc_TheOne.Items.Count - 1;
+        }
+
+        protected void btn_SenderChangeStart_Click(object sender, RoutedEventArgs e) => ChangeProcessStart(txb_Sender, "SenderSet", "SenderChange");
+        protected void btn_SenderChangeCancel_Click(object sender, RoutedEventArgs e) => ChangeProcessEnd("SenderChange", "SenderSet");
+        protected void btn_SenderChangeTry_Click(object sender, RoutedEventArgs e)
         {
             if (ChangeProcessTry(txb_Sender, core.SetSender, "SenderAddress"))
                 ChangeProcessEnd("SenderChange", "SenderSet");
         }
-            
-        internal void btn_ClientChangeStart_Click(object sender, RoutedEventArgs e) => ChangeProcessStart(txb_Client, "ClientSet", "ClientChange");
-        internal void btn_ClientChangeCancel_Click(object sender, RoutedEventArgs e) => ChangeProcessEnd("ClientChange", "ClientSet");
-        internal void btn_ClientChangeTry_Click(object sender, RoutedEventArgs e)
+
+        protected void btn_ClientChangeStart_Click(object sender, RoutedEventArgs e) => ChangeProcessStart(txb_Client, "ClientSet", "ClientChange");
+        protected void btn_ClientChangeCancel_Click(object sender, RoutedEventArgs e) => ChangeProcessEnd("ClientChange", "ClientSet");
+        protected void btn_ClientChangeTry_Click(object sender, RoutedEventArgs e)
         {
             if (ChangeProcessTry(txb_Client, core.SetClientHost, "Client"))
                 ChangeProcessEnd("ClientChange", "ClientSet");
         }
 
-        internal void btn_PortChangeStart_Click(object sender, RoutedEventArgs e) => ChangeProcessStart(txb_Port, "PortSet", "PortChange");
-        internal void btn_PortChangeCancel_Click(object sender, RoutedEventArgs e) => ChangeProcessEnd("PortChange", "PortSet");
-        internal void btn_PortChangeTry_Click(object sender, RoutedEventArgs e)
+        protected void btn_PortChangeStart_Click(object sender, RoutedEventArgs e) => ChangeProcessStart(txb_Port, "PortSet", "PortChange");
+        protected void btn_PortChangeCancel_Click(object sender, RoutedEventArgs e) => ChangeProcessEnd("PortChange", "PortSet");
+        protected void btn_PortChangeTry_Click(object sender, RoutedEventArgs e)
         {
             if (ChangeProcessTry(txb_Port, core.SetClientPort, "Port"))
                 ChangeProcessEnd("PortChange", "PortSet");
         }
 
-        internal void btn_Send_Click(object sender, RoutedEventArgs e) => SendMail();
+        protected void btn_Send_Click(object sender, RoutedEventArgs e) => SendMail();
 
-        private void btn_AddAttachment_Click(object sender, RoutedEventArgs e)
+        protected void btn_AddAttachment_Click(object sender, RoutedEventArgs e)
         {
             var dlg = new Microsoft.Win32.OpenFileDialog();
             if (dlg.ShowDialog() == true && !Attachments.Contains(dlg.FileName)) Attachments.Add(dlg.FileName);
         }
 
-        private void btn_RemoveAttachment_Click(object sender, RoutedEventArgs e)
+        protected void btn_RemoveAttachment_Click(object sender, RoutedEventArgs e)
         {
             //if (SelectedAttachments != null)
             //    foreach (var el in SelectedAttachments) _ = Attachments.Remove(el.ToString());
             _ = Attachments.Remove(SelectedAttachment);
         }
 
-        private void btn_AddReciever_Click(object sender, RoutedEventArgs e)
+        protected void btn_AddReciever_Click(object sender, RoutedEventArgs e)
         {
             bool exists = false;
             foreach (MailAddress el in Destinations)
@@ -200,7 +209,7 @@ namespace MailSend.WPFapp
             if (!exists) Destinations.Add(new MailAddress(NewDestination));
         }
 
-        private void btn_RemoveReciever_Click(object sender, RoutedEventArgs e)
+        protected void btn_RemoveReciever_Click(object sender, RoutedEventArgs e)
         {
             for (int i = Destinations.Count - 1; i >= 0; i--)
             {

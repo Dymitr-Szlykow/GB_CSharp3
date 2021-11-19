@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MailSend.WPFapp", "MailSend
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MailSend.WinFormsApp", "MailSend.WinFormsApp\MailSend.WinFormsApp.csproj", "{1E8F4238-F758-424C-B659-5CFF790D19F4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailSend.WPFapp.ControlsLib", "MailSend.WPFapp.ControlsLib\MailSend.WPFapp.ControlsLib.csproj", "{4836F3BE-6F5A-452F-8975-21C57F015660}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{1E8F4238-F758-424C-B659-5CFF790D19F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E8F4238-F758-424C-B659-5CFF790D19F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E8F4238-F758-424C-B659-5CFF790D19F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4836F3BE-6F5A-452F-8975-21C57F015660}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4836F3BE-6F5A-452F-8975-21C57F015660}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4836F3BE-6F5A-452F-8975-21C57F015660}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4836F3BE-6F5A-452F-8975-21C57F015660}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
