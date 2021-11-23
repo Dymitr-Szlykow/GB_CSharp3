@@ -118,7 +118,7 @@ namespace CoreLib
 
             if (Destinations.Count > 1)
             {
-                for (int i = 1; i < Destinations.Count; i++) res.Bcc.Add(Destinations[i]);
+                for (int i = 1; i < Destinations.Count; i++) res.To.Add(Destinations[i]);
             }
 
             if (Attachments != null)

@@ -4,12 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MailSend.WPFapp.ControlsLib"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"  x:Name="Root"
              d:DesignHeight="50" d:DesignWidth="200">
     <DockPanel>
         <Button DockPanel.Dock="Left" x:Name="LeftButton" Margin="3,0,3,0" Padding="5,0,5,2"
-                Content="{Binding NameLeft}" Width="auto" Click="FireLeftClick"/>
+                Content="{Binding NameLeft, Mode=OneWay}" Width="auto" Click="FireLeftClick" CommandParameter="{Binding GeneralParameter}"/>
         <Button DockPanel.Dock="Right" x:Name="RightButton" Margin="3,0,3,0" Padding="5,0,5,2"
-                Content="{Binding NameRight}" Width="auto" Click="FireRightClick"/>
+                Content="{Binding NameRight, Mode=OneWay}" Width="auto" Click="FireRightClick" CommandParameter="{Binding GeneralParameter}"/>
     </DockPanel>
 </UserControl>
