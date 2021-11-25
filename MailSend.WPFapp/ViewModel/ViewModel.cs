@@ -15,6 +15,8 @@ namespace MailSend.WPFapp.ViewModel
     public class MailSendViewModel : INotifyPropertyChanged
     {
         public MailSendCore _model;
+        private string _NewSenderAdress;
+        private string _NewClientPort;
         private string _NewDestination;
         private string _MailBody;
         private string _Subject;
@@ -44,6 +46,31 @@ namespace MailSend.WPFapp.ViewModel
             }
         }
 
+        public string NewSenderAdress
+        {
+            get => _NewSenderAdress;
+            set
+            {
+                if (_NewSenderAdress != value)
+                {
+                    _NewSenderAdress = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public string NewClientPort
+        {
+            get => _NewClientPort;
+            set
+            {
+                if (_NewClientPort != value)
+                {
+                    _NewClientPort = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
         public ObservableCollection<string> Attachments
         {
             get => _model.Attachments;
@@ -57,6 +84,8 @@ namespace MailSend.WPFapp.ViewModel
             get => _model.Destinations;
             set => _model.Destinations = value;
         }
+        public string SelectedDestination { get; set; }
+
         public string NewDestination
         {
             get => _NewDestination;
@@ -67,9 +96,9 @@ namespace MailSend.WPFapp.ViewModel
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("NewDestinationFits"));
             }
         }
-        public bool NewDestinationFits { get => _model.AddressFits(NewDestination); }
-        public string SelectedDestination { get; set; }
+        //public bool NewDestinationFits { get => _model.AddressFits(NewDestination); }
         #endregion
+
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
@@ -124,6 +153,16 @@ namespace MailSend.WPFapp.ViewModel
             {
                 txb.Text = "некорректное значение";
                 return false;
+            }
+        }
+        public bool TemporaryChange(TextBox txb, Predicate<string> changingMethod, string propertyName)
+        {
+            //_ = mainViewModel._model.SetSender(_NewSenderAdress);
+            if (!_model.SetSender(_NewSenderAdress)) throw new Exception("разобщение ViewModel и Model по обновлению адреса отправителя");
+            else
+            {
+                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+                return true;
             }
         }
 

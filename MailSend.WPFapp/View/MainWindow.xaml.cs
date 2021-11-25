@@ -77,9 +77,18 @@ namespace MailSend.WPFapp
         protected void btn_SenderChangeCancel_Click(object sender, RoutedEventArgs e) => mainViewModel.ChangeVisibility("SenderChange", "SenderSet", TheGrid);
         protected void btn_SenderChangeTry_Click(object sender, RoutedEventArgs e)
         {
-            if (mainViewModel.ChangeProcessTry(txb_Sender, mainViewModel._model.SetSender, "SenderAddress"))
+            if (mainViewModel.TemporaryChange(txb_Sender, mainViewModel._model.SetSender, "SenderAddress"))
                 mainViewModel.ChangeVisibility("SenderChange", "SenderSet", TheGrid);
         }
+
+
+        //protected void btn_SenderChangeStart_Click(object sender, RoutedEventArgs e) => mainViewModel.ChangeProcessStart(txb_Sender, "SenderSet", "SenderChange");
+        //protected void btn_SenderChangeCancel_Click(object sender, RoutedEventArgs e) => mainViewModel.ChangeVisibility("SenderChange", "SenderSet", TheGrid);
+        //protected void btn_SenderChangeTry_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (mainViewModel.ChangeProcessTry(txb_Sender, mainViewModel._model.SetSender, "SenderAddress"))
+        //        mainViewModel.ChangeVisibility("SenderChange", "SenderSet", TheGrid);
+        //}
 
         protected void btn_ClientChangeStart_Click(object sender, RoutedEventArgs e) => mainViewModel.ChangeProcessStart(txb_Client, "ClientSet", "ClientChange");
         protected void btn_ClientChangeCancel_Click(object sender, RoutedEventArgs e) => mainViewModel.ChangeVisibility("ClientChange", "ClientSet", TheGrid);
@@ -95,6 +104,13 @@ namespace MailSend.WPFapp
         {
             if (mainViewModel.ChangeProcessTry(txb_Port, mainViewModel._model.SetClientPort, "Port"))
                 mainViewModel.ChangeVisibility("PortChange", "PortSet", TheGrid);
+        }
+
+        private void someel_ValidationError(object sender, ValidationErrorEventArgs e)
+        {
+            if (e.Action == ValidationErrorEventAction.Added)
+                (sender as Control).ToolTip = e.Error.ErrorContent.ToString();
+            else (sender as Control).ToolTip = null;
         }
     }
 }

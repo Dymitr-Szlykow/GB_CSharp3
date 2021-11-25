@@ -11,6 +11,9 @@
     <Window.DataContext>
         <viewmodel:MailSendViewModel x:Name="mainViewModel"/>
     </Window.DataContext>
+    <Window.Resources>
+        <viewmodel:InverseBooleanConverter x:Key="InverseBool"/>
+    </Window.Resources>
     
     <Grid Margin="10" x:Name="TheGrid">
         <Grid.ColumnDefinitions>
@@ -40,10 +43,18 @@
                 Content="изменить" VerticalAlignment="Center" Padding="5,0,5,2"
                 Tag="SenderSet" Click="btn_SenderChangeStart_Click"/>
         <TextBox Grid.Row="2" Grid.Column="2" Margin="-5,0,2,0" Padding="3,0,3,0"
-                 x:Name="txb_Sender" Tag="SenderChange" VerticalContentAlignment="Center" Visibility="Hidden"/>
+                 x:Name="txb_Sender" Tag="SenderChange" VerticalContentAlignment="Center" Visibility="Hidden"
+                 Validation.Error="someel_ValidationError">
+            <TextBox.Text>
+                <Binding Path="NewSenderAdress" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                    <Binding.ValidationRules><viewmodel:EmailValidationRule/></Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
         <Button Grid.Row="2" Grid.Column="3" Margin="3,0,3,0"
                 Content="V" VerticalAlignment="Center" HorizontalAlignment="Left" Padding="5,0,5,2"
-                Tag="SenderChange" Click="btn_SenderChangeTry_Click" Visibility="Hidden"/>
+                Tag="SenderChange" Click="btn_SenderChangeTry_Click" Visibility="Hidden"
+                IsEnabled="{Binding ElementName=txb_Sender, Path=(Validation.HasError), Mode=OneWay, Converter={StaticResource InverseBool}}"/>
         <Button Grid.Row="2" Grid.Column="3" Margin="3,0,3,0"
                 Content="X" VerticalAlignment="Center" HorizontalAlignment="Right" Padding="5,0,5,2"
                 Tag="SenderChange" Click="btn_SenderChangeCancel_Click" Visibility="Hidden"/>
@@ -72,10 +83,18 @@
                 Content="изменить" VerticalAlignment="Center" Padding="5,0,5,2"
                 Tag="PortSet" Click="btn_PortChangeStart_Click"/>
         <TextBox Grid.Row="4" Grid.Column="2" Margin="-5,0,2,0" Padding="3,0,3,0"
-                 x:Name="txb_Port" Tag="PortChange" VerticalContentAlignment="Center" Visibility="Hidden"/>
+                 x:Name="txb_Port" Tag="PortChange" VerticalContentAlignment="Center" Visibility="Hidden"
+                 Validation.Error="someel_ValidationError">
+            <TextBox.Text>
+                <Binding Path="NewClientPort" UpdateSourceTrigger="PropertyChanged"  NotifyOnValidationError="True">
+                    <Binding.ValidationRules><viewmodel:SmtpClientPortValidationRule/></Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
         <Button Grid.Row="4" Grid.Column="3" Margin="3,0,3,0"
                 Content="V" VerticalAlignment="Center" HorizontalAlignment="Left" Padding="5,0,5,2"
-                Tag="PortChange" Click="btn_PortChangeTry_Click" Visibility="Hidden"/>
+                Tag="PortChange" Click="btn_PortChangeTry_Click" Visibility="Hidden"
+                IsEnabled="{Binding ElementName=txb_Port, Path=(Validation.HasError), Mode=OneWay, Converter={StaticResource InverseBool}}"/>
         <Button Grid.Row="4" Grid.Column="3" Margin="3,0,3,0"
                 Content="X" VerticalAlignment="Center" HorizontalAlignment="Right" Padding="5,0,5,2"
                 Tag="PortChange" Click="btn_PortChangeCancel_Click" Visibility="Hidden"/>
@@ -169,9 +188,17 @@
                             </ListView.View>
                         </ListView>
                         <TextBox Grid.Row="1" Grid.Column="0" Margin="5,0,5,0" Padding="3,0,3,0"
-                                 VerticalContentAlignment="Center" Text="{Binding NewDestination, UpdateSourceTrigger=PropertyChanged}"/>
+                                 x:Name="txb_NewDestination" VerticalContentAlignment="Center"
+                                 Validation.Error="someel_ValidationError">
+                            <TextBox.Text>
+                                <Binding Path="NewDestination" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                                    <Binding.ValidationRules><viewmodel:EmailValidationRule ValidatesOnTargetUpdated="True"/></Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
                         <Button Grid.Row="1" Grid.Column="1" Margin="5,3,5,3" Padding="5,0,5,0"
-                                Content="добавить" Height="auto" Command="{Binding AddRecieverCommand}" IsEnabled="{Binding NewDestinationFits, Mode=OneWay}"/>
+                                Content="добавить" Height="auto" Command="{Binding AddRecieverCommand}"
+                                IsEnabled="{Binding ElementName=txb_NewDestination, Path=(Validation.HasError), Mode=OneWay, Converter={StaticResource InverseBool}}"/>
                         <Button Grid.Row="1" Grid.Column="2" Margin="5,3,5,3" Padding="5,0,5,0"
                                 Content="исключить" Height="auto" Command="{Binding RemoveRecieverCommand}"/>
                     </Grid>

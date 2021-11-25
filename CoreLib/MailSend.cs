@@ -11,7 +11,7 @@ namespace CoreLib
 {
     public class MailSendCore
     {
-        protected static Regex _MailAdressTemplate = new Regex(@"^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,6}");
+        protected static Regex _MailAdressRegTemplate = new Regex(@"^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,6}");
         protected static Regex _DeleteMe = new Regex("^[a-zA-Z]{1}[a-zA-Z0-9]{1,9}$");
 
         public MailAddress Sender { get; protected set; }
@@ -88,7 +88,7 @@ namespace CoreLib
         }
 
 
-        public bool AddressFits(string address) => _MailAdressTemplate.IsMatch(address);
+        public bool AddressFits(string address) => _MailAdressRegTemplate.IsMatch(address);
 
         //public static (string, int) GetClient(string address)  // TODO
         //{
