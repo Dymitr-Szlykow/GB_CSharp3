@@ -5,7 +5,7 @@ using System.Windows.Input;
 
 namespace MailSend.WPFapp.ViewModel
 {
-    class DelegateCommand : ICommand
+    public class DelegateCommand : ICommand
     {
         private Action<object> _Execute;
         private Func<object, bool> _CanExecute;

@@ -88,7 +88,7 @@ namespace CoreLib
         }
 
 
-        public bool AddressFits(string address) => _MailAdressRegTemplate.IsMatch(address);
+        public static bool AddressFits(string address) => _MailAdressRegTemplate.IsMatch(address);
 
         //public static (string, int) GetClient(string address)  // TODO
         //{

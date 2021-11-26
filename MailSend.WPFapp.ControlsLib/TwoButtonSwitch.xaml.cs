@@ -13,7 +13,7 @@ using System.Windows.Shapes;
 
 namespace MailSend.WPFapp.ControlsLib
 {
-    public partial class TwoButtonSwitch : UserControl
+    public partial class TwoButtonSwitch_clumsy : UserControl
     {
         public string NameLeft { get; set; }
         public string NameRight { get; set; }
@@ -22,7 +22,7 @@ namespace MailSend.WPFapp.ControlsLib
         public Action<object, RoutedEventArgs> RightButtonAction { get; set; }
 
 
-        public TwoButtonSwitch()
+        public TwoButtonSwitch_clumsy()
         {
             InitializeComponent();
             DataContext = this;

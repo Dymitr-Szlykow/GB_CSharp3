@@ -12,7 +12,7 @@ using System.Windows.Input;
 
 namespace MailSend.WPFapp.ViewModel
 {
-    public class MailSendViewModel : INotifyPropertyChanged
+    public class MailSendViewModel : INotifyPropertyChanged, IDataErrorInfo
     {
         public MailSendCore _model;
         private string _NewSenderAdress;
@@ -85,7 +85,6 @@ namespace MailSend.WPFapp.ViewModel
             set => _model.Destinations = value;
         }
         public string SelectedDestination { get; set; }
-
         public string NewDestination
         {
             get => _NewDestination;
@@ -96,18 +95,62 @@ namespace MailSend.WPFapp.ViewModel
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("NewDestinationFits"));
             }
         }
-        //public bool NewDestinationFits { get => _model.AddressFits(NewDestination); }
+        #endregion
+        #region неиспользованные свойства
+        //public string PrevTab
+        //{
+        //    get
+        //    {
+        //        if (tbc_TheOne.SelectedIndex > 0)
+        //            return ((TabItem)tbc_TheOne.Items[tbc_TheOne.SelectedIndex - 1]).Header.ToString();
+        //        else return string.Empty;
+        //    }
+        //}
+        //public string NextTab
+        //{
+        //    get
+        //    {
+        //        if (tbc_TheOne.SelectedIndex < tbc_TheOne.Items.Count - 1)
+        //            return ((TabItem)tbc_TheOne.Items[tbc_TheOne.SelectedIndex + 1]).Header.ToString();
+        //        else return string.Empty;
+        //    }
+        //}
         #endregion
 
 
+        #region INTERFACE INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        #endregion
+
+        #region INTERFACE IDataErrorInfo
+        string IDataErrorInfo.Error => "некорректный формат адреса электронной почты";
+        string IDataErrorInfo.this[string columnName]
+        {
+            get
+            {
+                if (columnName == "NewSenderAdress")
+                {
+                    if (NewSenderAdress == null) return null;
+                    else if (!MailSendCore.AddressFits(NewSenderAdress)) return "некоректный адресс";
+                }
+
+                else if (columnName == "NewDestination")
+                {
+                    if (NewDestination == null) return null;
+                    else if (!MailSendCore.AddressFits(NewDestination)) return "некоректный адресс";
+                }
+
+                return null;
+            }
+        }
+        #endregion
 
 
-        #region Комманды
+        #region КОММАНДЫ
         public ICommand TurnLeftCommand { get => new DelegateCommand(TurnTabLeft); }
         public ICommand TurnRightCommand { get => new DelegateCommand(TurnTabRight); }
         public ICommand AddAttachmentCommand { get => new DelegateCommand(AddAttachment); }

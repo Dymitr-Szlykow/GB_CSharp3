@@ -14,75 +14,80 @@ using System.Windows.Shapes;
 
 namespace MailSend.WPFapp.ControlsLib
 {
-    public partial class TwoButtonSwitch2 : UserControl
+    public partial class TwoButtonSwitch_sophisticated : UserControl
     {
-        public static readonly DependencyProperty NameLeftProperty = DependencyProperty.Register("NameLeft", typeof(string), typeof(TwoButtonSwitch2));
-        public static readonly DependencyProperty NameRightProperty = DependencyProperty.Register("NameRight", typeof(string), typeof(TwoButtonSwitch2));
-        public static readonly DependencyProperty LeftCommandProperty = DependencyProperty.Register("LeftButtonCommand", typeof(ICommand), typeof(TwoButtonSwitch2));
-        public static readonly DependencyProperty RightCommandProperty = DependencyProperty.Register("RightButtonCommand", typeof(ICommand), typeof(TwoButtonSwitch2));
-        public static readonly DependencyProperty GeneralParameterProperty = DependencyProperty.Register("GeneralParameter", typeof(UIElement), typeof(TwoButtonSwitch2));
+        public static readonly DependencyProperty NameLeftProperty = DependencyProperty.Register("NameLeft", propertyType: typeof(string), ownerType: typeof(TwoButtonSwitch_sophisticated));
+        public static readonly DependencyProperty NameRightProperty = DependencyProperty.Register("NameRight", propertyType: typeof(string), ownerType: typeof(TwoButtonSwitch_sophisticated));
+        public static readonly DependencyProperty LeftButtonClickProperty = DependencyProperty.Register("LeftButtonClick", propertyType: typeof(string), ownerType: typeof(TwoButtonSwitch_sophisticated));
+        public static readonly DependencyProperty RightButtonClickProperty = DependencyProperty.Register("RightButtonClick", propertyType: typeof(string), ownerType: typeof(TwoButtonSwitch_sophisticated));
+        public static readonly DependencyProperty LeftButtonCommandProperty = DependencyProperty.Register("LeftButtonCommand", propertyType: typeof(ICommand), ownerType: typeof(TwoButtonSwitch_sophisticated));
+        public static readonly DependencyProperty RightButtonCommandProperty = DependencyProperty.Register("RightButtonCommand", propertyType: typeof(ICommand), ownerType: typeof(TwoButtonSwitch_sophisticated));
+        public static readonly DependencyProperty CommonParameterProperty = DependencyProperty.Register("CommonParameter", propertyType: typeof(UIElement), ownerType: typeof(TwoButtonSwitch_sophisticated));
 
-        public static readonly RoutedEvent LeftButtonActionEvent =
+        public static readonly RoutedEvent LeftButtonClickEvent =
             EventManager.RegisterRoutedEvent("LeftButtonClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Button));
-        public static readonly RoutedEvent RightButtonActionEvent =
+        public static readonly RoutedEvent RightButtonClickEvent =
             EventManager.RegisterRoutedEvent("RightButtonAction", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(Button));
 
 
         public string NameLeft
         {
-            get => (string)GetValue(NameLeftProperty);
+            get => GetValue(NameLeftProperty) as string;
             set => SetValue(NameLeftProperty, value);
         }
         public string NameRight
         {
-            get => (string)GetValue(NameRightProperty);
+            get => GetValue(NameRightProperty) as string;
             set => SetValue(NameRightProperty, value);
+        }
+        public event RoutedEventHandler LeftButtonClick
+        {
+            add => this.AddHandler(LeftButtonClickEvent, value);
+            remove => this.RemoveHandler(LeftButtonClickEvent, value);
+        }
+        public event RoutedEventHandler RightButtonClick
+        {
+            add => this.AddHandler(RightButtonClickEvent, value);
+            remove => this.RemoveHandler(RightButtonClickEvent, value);
         }
         public ICommand LeftButtonCommand
         {
-            get => (ICommand)GetValue(LeftCommandProperty);
-            set => SetValue(LeftCommandProperty, value);
+            get => GetValue(LeftButtonCommandProperty) as ICommand;
+            set => SetValue(LeftButtonCommandProperty, value);
         }
         public ICommand RightButtonCommand
         {
-            get => (ICommand)GetValue(RightCommandProperty);
-            set => SetValue(RightCommandProperty, value);
+            get => GetValue(RightButtonCommandProperty) as ICommand;
+            set => SetValue(RightButtonCommandProperty, value);
         }
-        public UIElement GeneralParameter
+        public UIElement CommonParameter
         {
-            get => (UIElement)GetValue(GeneralParameterProperty);
-            set => SetValue(GeneralParameterProperty, value);
-        }
-
-        public event RoutedEventHandler LeftButtonAction
-        {
-            add    => this.AddHandler(LeftButtonActionEvent, value);
-            remove => this.RemoveHandler(LeftButtonActionEvent, value);
-        }
-        public event RoutedEventHandler RightButtonAction
-        {
-            add    => this.AddHandler(RightButtonActionEvent, value);
-            remove => this.RemoveHandler(RightButtonActionEvent, value);
+            get => GetValue(CommonParameterProperty) as UIElement;
+            set => SetValue(CommonParameterProperty, value);
         }
 
 
-        public TwoButtonSwitch2()
-        {
-            InitializeComponent();
-            DataContext = this;
-        }
-
+        public TwoButtonSwitch_sophisticated() => InitializeComponent();
 
         private void FireLeftClick(object sender, RoutedEventArgs e)
         {
-            e.Handled = true;
-            RaiseEvent(new RoutedEventArgs(LeftButtonActionEvent));
+            if (LeftButtonCommand != null)
+                LeftButtonCommand.Execute(CommonParameter);
+            else
+            {
+                e.Handled = true;
+                RaiseEvent(new RoutedEventArgs(LeftButtonClickEvent));
+            }
         }
-
         public void FireRightClick(object sender, RoutedEventArgs e)
         {
-            e.Handled = true;
-            RaiseEvent(new RoutedEventArgs(RightButtonActionEvent));
+            if (RightButtonCommand != null)
+                RightButtonCommand.Execute(CommonParameter);
+            else
+            {
+                e.Handled = true;
+                RaiseEvent(new RoutedEventArgs(RightButtonClickEvent));
+            }
         }
     }
 }

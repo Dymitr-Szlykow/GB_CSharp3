@@ -21,43 +21,13 @@ using System.Windows.Shapes;
 
 namespace MailSend.WPFapp
 {
-    public partial class MainWindow : Window, INotifyPropertyChanged
+    public partial class MainWindow : Window
     {
-        //public MailSendViewModel ViewModel { get; set; }
-
-        #region СВОЙСТВА
-        //public string PrevTab
-        //{
-        //    get
-        //    {
-        //        if (tbc_TheOne.SelectedIndex > 0)
-        //            return ((TabItem)tbc_TheOne.Items[tbc_TheOne.SelectedIndex - 1]).Header.ToString();
-        //        else return string.Empty;
-        //    }
-        //}
-        //public string NextTab
-        //{
-        //    get
-        //    {
-        //        if (tbc_TheOne.SelectedIndex < tbc_TheOne.Items.Count - 1)
-        //            return ((TabItem)tbc_TheOne.Items[tbc_TheOne.SelectedIndex + 1]).Header.ToString();
-        //        else return string.Empty;
-        //    }
-        //}
-        #endregion
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-
+        //public MailSendViewModel mainViewModel { get; set; }
         public MainWindow()
         {
             InitializeComponent();
-            //DataContext = ViewModel = new MailSendViewModel();
+            //DataContext = mainViewModel = new MailSendViewModel();
         }
 
 
@@ -70,6 +40,7 @@ namespace MailSend.WPFapp
         {
             if (tbc_TheOne.SelectedIndex < tbc_TheOne.Items.Count - 1) tbc_TheOne.SelectedIndex++;
             else tbc_TheOne.SelectedIndex = tbc_TheOne.Items.Count - 1;
+            TheUserControl = null;
         }
 
 

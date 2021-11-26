@@ -6,13 +6,20 @@
         xmlns:local="clr-namespace:MailSend.WPFapp"
         xmlns:viewmodel="clr-namespace:MailSend.WPFapp.ViewModel"
         xmlns:Controls="clr-namespace:MailSend.WPFapp.ControlsLib;assembly=MailSend.WPFapp.ControlsLib"
-        mc:Ignorable="d"
+        mc:Ignorable="d" x:Name="Root"
         Title="Отправщик электронных писем" MinWidth="600" MinHeight="400" Width="700" Height="500">
     <Window.DataContext>
         <viewmodel:MailSendViewModel x:Name="mainViewModel"/>
     </Window.DataContext>
     <Window.Resources>
         <viewmodel:InverseBooleanConverter x:Key="InverseBool"/>
+        <Style TargetType="TextBox">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors).CurrentItem.ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
     
     <Grid Margin="10" x:Name="TheGrid">
@@ -44,13 +51,7 @@
                 Tag="SenderSet" Click="btn_SenderChangeStart_Click"/>
         <TextBox Grid.Row="2" Grid.Column="2" Margin="-5,0,2,0" Padding="3,0,3,0"
                  x:Name="txb_Sender" Tag="SenderChange" VerticalContentAlignment="Center" Visibility="Hidden"
-                 Validation.Error="someel_ValidationError">
-            <TextBox.Text>
-                <Binding Path="NewSenderAdress" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
-                    <Binding.ValidationRules><viewmodel:EmailValidationRule/></Binding.ValidationRules>
-                </Binding>
-            </TextBox.Text>
-        </TextBox>
+                 Text="{Binding NewSenderAdress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
         <Button Grid.Row="2" Grid.Column="3" Margin="3,0,3,0"
                 Content="V" VerticalAlignment="Center" HorizontalAlignment="Left" Padding="5,0,5,2"
                 Tag="SenderChange" Click="btn_SenderChangeTry_Click" Visibility="Hidden"
@@ -83,8 +84,7 @@
                 Content="изменить" VerticalAlignment="Center" Padding="5,0,5,2"
                 Tag="PortSet" Click="btn_PortChangeStart_Click"/>
         <TextBox Grid.Row="4" Grid.Column="2" Margin="-5,0,2,0" Padding="3,0,3,0"
-                 x:Name="txb_Port" Tag="PortChange" VerticalContentAlignment="Center" Visibility="Hidden"
-                 Validation.Error="someel_ValidationError">
+                 x:Name="txb_Port" Tag="PortChange" VerticalContentAlignment="Center" Visibility="Hidden">
             <TextBox.Text>
                 <Binding Path="NewClientPort" UpdateSourceTrigger="PropertyChanged"  NotifyOnValidationError="True">
                     <Binding.ValidationRules><viewmodel:SmtpClientPortValidationRule/></Binding.ValidationRules>
@@ -99,13 +99,16 @@
                 Content="X" VerticalAlignment="Center" HorizontalAlignment="Right" Padding="5,0,5,2"
                 Tag="PortChange" Click="btn_PortChangeCancel_Click" Visibility="Hidden"/>
 
-        <Controls:TwoButtonSwitch Grid.Row="6" Grid.Column="1" HorizontalAlignment="Center"
-                                  NameLeft="влево" NameRight="вправо"
-                                  LeftButtonAction="TurnTabLeft" RightButtonAction="TurnTabRight"/>
-        <Controls:TwoButtonSwitch2 Grid.Row="6" Grid.Column="2" HorizontalAlignment="Center"
-                                   NameLeft="влево" NameRight="вправо"
-                                   LeftButtonAction="TurnTabLeft" RightButtonAction="TurnTabRight"/>
-        <!--GeneralParameter="{Binding Source='tbc_TheOne'}" LeftButtonCommand="{Binding TurnLeftCommand}" RightButtonCommand="{Binding TurnRightCommand}"-->
+        <Controls:TwoButtonSwitch_clumsy
+            Grid.Row="6" Grid.Column="1" HorizontalAlignment="Center"
+            NameLeft="влево" NameRight="вправо"
+            LeftButtonAction="TurnTabLeft" RightButtonAction="TurnTabRight"/>
+        <Controls:TwoButtonSwitch_sophisticated
+            Grid.Row="6" Grid.Column="2" HorizontalAlignment="Center" x:Name="TheUserControl"
+            NameLeft="влево" NameRight="вправо"
+            LeftButtonClick="TurnTabLeft" RightButtonClick="TurnTabRight"
+            LeftButtonCommand="{Binding TurnLeftCommand, Mode=OneTime}" RightButtonCommand="{Binding TurnRightCommand, Source=mainViewModel, Mode=OneTime}"
+            CommonParameter="{Binding ElementName=tbc_TheOne}"/>
 
         <Grid Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="5" >
             <Grid.ColumnDefinitions>
@@ -188,8 +191,7 @@
                             </ListView.View>
                         </ListView>
                         <TextBox Grid.Row="1" Grid.Column="0" Margin="5,0,5,0" Padding="3,0,3,0"
-                                 x:Name="txb_NewDestination" VerticalContentAlignment="Center"
-                                 Validation.Error="someel_ValidationError">
+                                 x:Name="txb_NewDestination" VerticalContentAlignment="Center">
                             <TextBox.Text>
                                 <Binding Path="NewDestination" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
                                     <Binding.ValidationRules><viewmodel:EmailValidationRule ValidatesOnTargetUpdated="True"/></Binding.ValidationRules>
