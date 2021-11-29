@@ -15,7 +15,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Занятие 4", "Зан�
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cypher.Test", "Cypher.Test\Cypher.Test.csproj", "{9966C9DA-7CF7-4D32-9949-0051E2EDD9C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypher", "Cypher\Cypher.csproj", "{83F333CC-992B-43C3-A116-150B5CA55448}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cypher", "Cypher\Cypher.csproj", "{83F333CC-992B-43C3-A116-150B5CA55448}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Занятие 5", "Занятие 5", "{48DA7066-67F0-4DAE-81B7-EA2046F54C8D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson5", "Lesson5\Lesson5.csproj", "{9384EFDE-A23C-4A18-8CEC-1AE803083E9A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +51,10 @@ Global
 		{83F333CC-992B-43C3-A116-150B5CA55448}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83F333CC-992B-43C3-A116-150B5CA55448}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83F333CC-992B-43C3-A116-150B5CA55448}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9384EFDE-A23C-4A18-8CEC-1AE803083E9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9384EFDE-A23C-4A18-8CEC-1AE803083E9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9384EFDE-A23C-4A18-8CEC-1AE803083E9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9384EFDE-A23C-4A18-8CEC-1AE803083E9A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,6 +62,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{9966C9DA-7CF7-4D32-9949-0051E2EDD9C4} = {CE641C91-3970-4123-A94A-22E5D94E4316}
 		{83F333CC-992B-43C3-A116-150B5CA55448} = {CE641C91-3970-4123-A94A-22E5D94E4316}
+		{9384EFDE-A23C-4A18-8CEC-1AE803083E9A} = {48DA7066-67F0-4DAE-81B7-EA2046F54C8D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {248DDF63-5E42-4E76-A008-E962DA15DEA2}
