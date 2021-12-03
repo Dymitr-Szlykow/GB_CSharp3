@@ -15,7 +15,7 @@ namespace Lesson5
         private readonly List<Thread> threads = new List<Thread>();
         private bool canReadArray = false;
         private bool canSetArray = false;
-
+        
 
         #region ЗАДАЧА 1
         private string _Input;
@@ -242,26 +242,28 @@ namespace Lesson5
 
         public void OnLoad()
         {
-            if (File.Exists(filename))
+            if (File.Exists(filename)) new Thread(LoadFile).Start();
+            else new Thread(GenerateFile).Start();
+        }
+
+        public void LoadFile()
+        {
+            canReadArray = false;
+            FileLoadReport = "файл загружается";
+
+            var timer = Stopwatch.StartNew();
+            var res = new List<int>(linesNumber);
+            using var reader = new StreamReader(filename);
+            while (!reader.EndOfStream)
             {
-                canReadArray = false;
-                FileLoadReport = "файл загружается";
-
-                var timer = Stopwatch.StartNew();
-                var res = new List<int>(linesNumber);
-                using var reader = new StreamReader(filename);
-                while (!reader.EndOfStream)
-                {
-                    if (int.TryParse(reader.ReadLine(), out int temp)) res.Add(temp);
-                }
-                timer.Stop();
-                senselessDataNumbers = res.ToArray();
-
-                FileLoadReport = $"файл загружен ({timer.ElapsedMilliseconds} мс)";
-                canReadArray = true;
-                canSetArray = true;
+                if (int.TryParse(reader.ReadLine(), out int num)) res.Add(num);
             }
-            else GenerateFile();
+            timer.Stop();
+            senselessDataNumbers = res.ToArray();
+
+            FileLoadReport = $"файл загружен ({timer.ElapsedMilliseconds} мс)";
+            canReadArray = true;
+            canSetArray = true;
         }
 
         public void GenerateFile()
